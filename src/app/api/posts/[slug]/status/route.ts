@@ -57,7 +57,7 @@ export async function PATCH(
 
       // Additional features: author avatar, post summary, feedback/support button
       const authorAvatar = post.author?.image || `${process.env.NEXT_PUBLIC_SITE_URL}/public/default-avatar.png`;
-      const postSummary = post.summary || '';
+      const postSummary = post.excerpt || post.content || '';
       const feedbackUrl = process.env.NOTIFY_FEEDBACK_URL || `${process.env.NEXT_PUBLIC_SITE_URL}/support`;
       if (status === 'PUBLISHED') {
         subject = 'Your post has been approved!';
