@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const session = await getServerSession(authOptions)
 
-    if (!session || !['ADMIN', 'EDITOR'].includes(session.user.role)) {
+    if (!session || !['ADMIN', 'EDITOR'].includes(session.user.role || '')) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
