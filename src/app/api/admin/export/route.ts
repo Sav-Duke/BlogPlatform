@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
         }),
         prisma.category.findMany(),
         prisma.tag.findMany(),
-        prisma.setting.findMany(),
+        prisma.settings.findMany(),
       ])
 
       data.users = users
