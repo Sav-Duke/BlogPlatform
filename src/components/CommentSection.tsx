@@ -18,7 +18,7 @@ interface Comment {
     id: string
     name: string | null
     image: string | null
-  }
+  } | null
   replies?: Comment[]
 }
 
