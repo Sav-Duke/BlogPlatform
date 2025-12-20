@@ -6,6 +6,7 @@ interface Task {
   title: string
   deadline: string
   assignedTo: { id: string; name: string }
+  post?: { id: string; title: string; slug: string }
 }
 
 import { useEffect, useState } from 'react'
