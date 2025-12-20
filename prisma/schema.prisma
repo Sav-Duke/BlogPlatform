@@ -1,0 +1,294 @@
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  topic       String?
+  deadline    DateTime
+  assignedTo  User     @relation("UserAssignedTasks", fields: [assignedToId], references: [id], onDelete: Cascade)
+  assignedToId String
+  status      String   @default("OPEN")
+  priority    String   @default("NORMAL")
+  recurring   Boolean  @default(false)
+  recurrence  String?
+  attachments String?  // Comma-separated file URLs or JSON
+  progress    Int      @default(0)
+  comments    TaskComment[]
+  post        Post?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([assignedToId])
+  @@map("tasks")
+}
+
+model TaskComment {
+  id        String   @id @default(cuid())
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId    String
+  author    User     @relation("UserTaskComments", fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  parentId  String?
+  parent    TaskComment? @relation("TaskCommentParent", fields: [parentId], references: [id])
+  replies   TaskComment[] @relation("TaskCommentParent")
+  @@index([taskId])
+  @@index([authorId])
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          String    @default("USER")
+  bio           String?
+  website       String?
+  twitter       String?
+  github        String?
+  
+  posts         Post[]
+  comments      Comment[]
+  accounts      Account[]
+  sessions      Session[]
+  activityLogs  ActivityLog[]
+  postRevisions PostRevision[]
+  assignedTasks Task[]    @relation("UserAssignedTasks")
+  taskComments  TaskComment[] @relation("UserTaskComments")
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Post {
+  id              String     @id @default(cuid())
+  title           String
+  slug            String     @unique
+  excerpt         String?
+  content         String
+  coverImage      String?
+  status          String     @default("PENDING")
+  featured        Boolean    @default(false)
+  viewCount       Int        @default(0)
+  readTime        Int        @default(5)
+  
+  authorId        String
+  author          User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  categories      Category[]
+  tags            Tag[]
+  comments        Comment[]
+  
+  publishedAt     DateTime?
+  scheduledTask   Task?     @relation(fields: [scheduledTaskId], references: [id])
+  scheduledTaskId String? @unique
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  
+  seoTitle        String?
+  seoDescription  String?
+  seoKeywords     String?
+  focusKeyword    String?
+  theme           String      @default("minimalist")
+  
+  @@index([slug])
+  @@index([status])
+  @@index([authorId])
+  @@index([publishedAt])
+  @@map("posts")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  image       String?
+  color       String?
+  
+  posts       Post[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("categories")
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  
+  posts     Post[]
+  
+  createdAt DateTime @default(now())
+  
+  @@map("tags")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  approved  Boolean  @default(false)
+
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  authorId  String?
+  author    User?     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  parentId  String?
+  parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[] @relation("CommentReplies")
+
+  anonymousName String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([postId])
+  @@index([authorId])
+  @@map("comments")
+}
+
+model Media {
+  id          String   @id @default(cuid())
+  filename    String
+  originalName String
+  mimeType    String
+  size        Int
+  url         String
+  alt         String?
+  caption     String?
+  
+  uploadedById String?
+  
+  createdAt   DateTime @default(now())
+  
+  @@map("media")
+}
+
+model Settings {
+  id              String   @id @default(cuid())
+  siteName        String
+  siteDescription String?
+  siteUrl         String
+  logo            String?
+  favicon         String?
+  
+  allowComments   Boolean  @default(true)
+  moderateComments Boolean @default(true)
+  
+  postsPerPage    Int      @default(10)
+  
+  googleAnalytics String?
+  facebookPixel   String?
+  
+  socialTwitter   String?
+  socialFacebook  String?
+  socialInstagram String?
+  socialLinkedin  String?
+  socialGithub    String?
+  
+  updatedAt       DateTime @updatedAt
+  
+  @@map("settings")
+}
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  action      String   // CREATE, UPDATE, DELETE, LOGIN, LOGOUT
+  entity      String   // POST, CATEGORY, TAG, COMMENT, USER, SETTING
+  entityId    String?
+  description String
+  metadata    String?  // JSON string for additional data
+  ipAddress   String?
+  userAgent   String?
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
+  @@index([entity])
+  @@index([createdAt])
+  @@map("activity_logs")
+}
+
+model PostRevision {
+  id              String   @id @default(cuid())
+  title           String
+  content         String
+  excerpt         String?
+  coverImage      String?
+  status          String
+  featured        Boolean
+  seoTitle        String?
+  seoDescription  String?
+  seoKeywords     String?
+  focusKeyword    String?
+  
+  postId          String
+  
+  createdById     String
+  createdBy       User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  
+  createdAt       DateTime @default(now())
+  
+  @@index([postId])
+  @@index([createdAt])
+  @@map("post_revisions")
+}

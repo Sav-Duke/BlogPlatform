@@ -1,0 +1,24 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Send Task Reminders",
+			"type": "shell",
+			"command": "npx ts-node scripts/sendTaskReminders.ts",
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Start Next.js Server",
+			"type": "shell",
+			"command": "npx next dev",
+			"group": "build"
+		},
+		{
+			"label": "Start Next.js Server",
+			"type": "shell",
+			"command": "npx next dev",
+			"group": "build"
+		}
+	]
+}

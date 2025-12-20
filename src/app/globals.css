@@ -1,0 +1,327 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-gray-200 dark:border-gray-800;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-gray-600;
+}
+
+/* Rich text editor styles */
+.ProseMirror {
+  @apply min-h-[500px] outline-none prose prose-lg dark:prose-invert max-w-none;
+}
+
+.ProseMirror p {
+  @apply my-5 leading-relaxed text-gray-800 dark:text-gray-200;
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3 {
+  @apply font-bold mt-10 mb-5;
+}
+
+.ProseMirror h1 {
+  @apply text-4xl text-gray-900 dark:text-white;
+}
+
+.ProseMirror h2 {
+  @apply text-3xl text-gray-900 dark:text-white;
+}
+
+.ProseMirror h3 {
+  @apply text-2xl text-gray-800 dark:text-gray-100;
+}
+
+.ProseMirror code {
+  @apply bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm font-mono text-pink-600 dark:text-pink-400;
+}
+
+.ProseMirror pre {
+  @apply bg-gray-900 dark:bg-gray-950 text-gray-100 p-6 rounded-xl overflow-x-auto my-8 shadow-2xl border-l-4 border-blue-500;
+  font-family: 'Courier New', 'Monaco', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.ProseMirror pre code {
+  @apply bg-transparent text-inherit p-0 text-green-300;
+}
+
+.ProseMirror blockquote {
+  @apply border-l-4 border-blue-500 pl-6 py-4 my-8 italic text-gray-700 dark:text-gray-300 bg-blue-50 dark:bg-blue-900/20 rounded-r-lg;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  @apply my-6 pl-8 space-y-3;
+}
+
+.ProseMirror li {
+  @apply text-gray-800 dark:text-gray-200 leading-relaxed;
+}
+
+.ProseMirror img,
+.ProseMirror .editor-image {
+  @apply rounded-2xl my-8 shadow-2xl cursor-pointer transition-all duration-300 hover:shadow-blue-500/50;
+  max-width: 100%;
+  height: auto;
+}
+
+.ProseMirror img:hover,
+.ProseMirror .editor-image:hover {
+  @apply transform scale-[1.02] shadow-2xl;
+}
+
+.ProseMirror img.ProseMirror-selectednode,
+.ProseMirror .editor-image.ProseMirror-selectednode {
+  @apply outline outline-4 outline-blue-500 outline-offset-4 shadow-blue-500/50;
+}
+
+.ProseMirror a {
+  @apply text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline decoration-2 underline-offset-4 cursor-pointer transition-colors font-medium;
+}
+
+.ProseMirror mark {
+  @apply px-2 py-1 rounded;
+}
+
+.ProseMirror table {
+  @apply w-full border-collapse my-8 shadow-lg rounded-lg overflow-hidden;
+}
+
+.ProseMirror td,
+.ProseMirror th {
+  @apply border border-gray-300 dark:border-gray-700 px-4 py-3;
+}
+
+.ProseMirror th {
+  @apply bg-gray-100 dark:bg-gray-800 font-bold;
+}
+
+.ProseMirror hr {
+  @apply my-8 border-0 border-t-2 border-gray-300 dark:border-gray-700;
+}
+
+/* Placeholder */
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: 'Start writing your amazing content here...';
+  float: left;
+  color: #9ca3af;
+  pointer-events: none;
+  height: 0;
+  font-style: italic;
+}
+
+/* Blog post display styles */
+.blog-content {
+  @apply prose prose-lg dark:prose-invert max-w-none;
+}
+
+.blog-content p {
+  @apply my-6 leading-relaxed text-lg text-gray-800 dark:text-gray-200;
+}
+
+.blog-content h1,
+.blog-content h2,
+.blog-content h3 {
+  @apply font-bold mt-12 mb-6 scroll-mt-24;
+}
+
+.blog-content h1 {
+  @apply text-5xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent;
+}
+
+.blog-content h2 {
+  @apply text-4xl text-gray-900 dark:text-white border-l-4 border-blue-500 pl-4;
+}
+
+.blog-content h3 {
+  @apply text-3xl text-gray-800 dark:text-gray-100;
+}
+
+.blog-content img {
+  @apply rounded-2xl shadow-2xl my-10 mx-auto hover:shadow-blue-500/30 transition-all duration-300;
+}
+
+.blog-content blockquote {
+  @apply border-l-4 border-blue-500 pl-6 py-4 my-8 italic text-xl text-gray-700 dark:text-gray-300 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-r-xl;
+}
+
+.blog-content code {
+  @apply bg-gradient-to-r from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30 px-2 py-1 rounded font-mono text-sm text-pink-600 dark:text-pink-400;
+}
+
+.blog-content pre {
+  @apply bg-gradient-to-br from-gray-900 to-gray-800 p-6 rounded-2xl my-10 shadow-2xl;
+}
+
+.blog-content pre code {
+  @apply bg-transparent text-green-300;
+}
+
+.blog-content a {
+  @apply text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline decoration-2 underline-offset-4 transition-all font-semibold;
+}
+
+.blog-content ul,
+.blog-content ol {
+  @apply my-8 pl-8 space-y-4;
+}
+
+.blog-content li {
+  @apply text-lg leading-relaxed;
+}
+
+.blog-content table {
+  @apply w-full my-10 shadow-2xl rounded-xl overflow-hidden;
+}
+
+.blog-content td,
+.blog-content th {
+  @apply border border-gray-200 dark:border-gray-700 px-6 py-4;
+}
+
+.blog-content th {
+  @apply bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold text-left;
+}
+
+.blog-content tr:nth-child(even) {
+  @apply bg-gray-50 dark:bg-gray-800/50;
+}
+
+/* Video wrapper */
+.video-container {
+  @apply relative my-10 rounded-2xl overflow-hidden shadow-2xl hover:shadow-blue-500/30 transition-all duration-300;
+  padding-bottom: 56.25%;
+  height: 0;
+}
+
+/* Video wrapper for responsive videos */
+.video-wrapper {
+  @apply relative pb-[56.25%] h-0 overflow-hidden my-6;
+}
+
+.video-wrapper iframe {
+  @apply absolute top-0 left-0 w-full h-full;
+}
+
+/* Animation utilities */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+  background-size: 1000px 100%;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+/* Loading skeleton */
+.skeleton {
+  @apply bg-gray-200 dark:bg-gray-800 rounded animate-pulse;
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-primary-600;
+}
+
+
+.dark .animate-shimmer {
+  background: linear-gradient(to right, #1f2937 0%, #374151 20%, #1f2937 40%, #1f2937 100%);
+}
