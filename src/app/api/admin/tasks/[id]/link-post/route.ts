@@ -17,8 +17,8 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     // Only allow linking if user owns the task or is admin/editor
     const task = await prisma.task.findUnique({ where: { id: params.id }, include: { assignedTo: true } })
     if (!task) return NextResponse.json({ error: 'Task not found' }, { status: 404 })
-    const isAdminOrEditor = ['ADMIN', 'EDITOR'].includes(session.user.role)
-    if (!isAdminOrEditor && task.assignedToId !== session.user.id) {
+    const isAdminOrEditor = ['ADMIN', 'EDITOR'].includes(session.user.role || '')
+    if (!isAdminOrEditor && task.assignedToId !== (session.user.id || '')) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
     // Link post to task
