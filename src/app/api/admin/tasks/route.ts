@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
-    if (!session?.user || !['ADMIN', 'EDITOR'].includes(session.user.role)) {
+    if (!session?.user || !['ADMIN', 'EDITOR'].includes(session.user.role || '')) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
     const { title, description, topic, deadline, assignedToId } = await req.json()
