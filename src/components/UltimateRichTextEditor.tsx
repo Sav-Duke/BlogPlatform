@@ -227,7 +227,7 @@ function UltimateRichTextEditorInner({
       {/* Editor Content */}
       <EditorContent 
         editor={editor} 
-        style={{ minHeight: 300, border: 'none', borderRadius: 8, padding: 16, background: '#fff' }}
+        className="min-h-[300px] rounded-lg p-4 bg-white dark:bg-gray-800 prose dark:prose-invert max-w-none"
       />
       <input
         type="file"
