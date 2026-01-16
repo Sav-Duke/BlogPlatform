@@ -35,12 +35,36 @@ export async function POST(req: NextRequest) {
     const json = await req.json()
     const body = categorySchema.parse(json)
 
+    // Check if slug already exists
+    const existing = await prisma.category.findUnique({
+      where: { slug: body.slug },
+    })
+
+    if (existing) {
+      return NextResponse.json(
+        { error: 'A category with this slug already exists' },
+        { status: 409 }
+      )
+    }
+
     const category = await prisma.category.create({
       data: body,
+      include: {
+        _count: {
+          select: { posts: true },
+        },
+      },
     })
 
     return NextResponse.json(category, { status: 201 })
   } catch (error: any) {
+    console.error('Category creation error:', error)
+    if (error.name === 'ZodError') {
+      return NextResponse.json(
+        { error: 'Validation error', details: error.errors },
+        { status: 400 }
+      )
+    }
     return NextResponse.json(
       { error: error.message || 'Something went wrong' },
       { status: 500 }

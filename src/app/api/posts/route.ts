@@ -8,14 +8,14 @@ import { calculateReadTime } from '@/lib/utils'
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
-    const page = parseInt(searchParams.get('page') || '1')
-    const limit = parseInt(searchParams.get('limit') || '10')
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1'))
+    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '10')))
     const status = searchParams.get('status')
     const categorySlug = searchParams.get('category')
     const tagSlug = searchParams.get('tag')
     const authorId = searchParams.get('authorId')
     const featured = searchParams.get('featured')
-    const search = searchParams.get('search')
+    const search = searchParams.get('search')?.trim()
 
     // Special case: fetch all drafts for a user (for task linking)
     if (searchParams.get('allDraftsForUser') === 'true' && authorId) {
@@ -55,11 +55,13 @@ export async function GET(req: NextRequest) {
       where.featured = true
     }
 
-    if (search) {
+    if (search && search.length > 0) {
+      // Sanitize search input
+      const sanitizedSearch = search.replace(/[%_]/g, '\\$&')
       where.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { excerpt: { contains: search, mode: 'insensitive' } },
-        { content: { contains: search, mode: 'insensitive' } },
+        { title: { contains: sanitizedSearch, mode: 'insensitive' } },
+        { excerpt: { contains: sanitizedSearch, mode: 'insensitive' } },
+        { content: { contains: sanitizedSearch, mode: 'insensitive' } },
       ]
     }
 

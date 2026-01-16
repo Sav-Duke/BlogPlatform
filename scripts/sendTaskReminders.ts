@@ -1,5 +1,5 @@
-import { prisma } from '../src/lib/prisma';
-import nodemailer from 'nodemailer';
+const { prisma } = require('../src/lib/prisma');
+const nodemailer = require('nodemailer');
 
 async function main() {
   const now = new Date();

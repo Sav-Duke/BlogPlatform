@@ -208,36 +208,6 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
       {children}
     </button>
   )
-    
-    if (url && editor) {
-      // Extract video ID from URL
-      const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)?.[1]
-      
-      if (videoId) {
-        const iframe = `<div class="video-wrapper"><iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`
-        editor.chain().focus().insertContent(iframe).run()
-      } else {
-        toast.error('Invalid YouTube URL')
-      }
-    }
-  }, [editor])
-
-  if (!editor) {
-    return null
-  }
-
-  const MenuButton = ({ onClick, active, children, title }: any) => (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition ${
-        active ? 'bg-gray-200 dark:bg-gray-700' : ''
-      }`}
-      title={title}
-    >
-      {children}
-    </button>
-  )
 
   return (
     <div className="border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden">

@@ -69,10 +69,11 @@ export async function POST(req: NextRequest) {
     let anonymousName = null;
     if (!authorId) {
       // Anonymous comment: require a name
-      if (!name || typeof name !== 'string' || name.trim().length < 2) {
-        return NextResponse.json({ error: 'Name is required for anonymous comments' }, { status: 400 })
+      if (!name || typeof name !== 'string' || name.trim().length < 2 || name.trim().length > 50) {
+        return NextResponse.json({ error: 'Name must be between 2 and 50 characters' }, { status: 400 })
       }
-      anonymousName = name.trim();
+      // Sanitize anonymous name
+      anonymousName = name.trim().substring(0, 50);
     }
 
     const comment = await prisma.comment.create({

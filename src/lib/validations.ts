@@ -76,6 +76,28 @@ export const userUpdateSchema = z.object({
   image: z.string().optional(),
 })
 
+export const taskSchema = z.object({
+  title: z.string().min(1, 'Title is required').max(200),
+  description: z.string().optional(),
+  topic: z.string().optional().nullable(),
+  deadline: z.string().datetime().or(z.date()),
+  assignedToId: z.string().min(1, 'Assignee is required'),
+  status: z.enum(['OPEN', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED']).default('OPEN'),
+  priority: z.enum(['LOW', 'NORMAL', 'HIGH', 'URGENT']).default('NORMAL'),
+  recurring: z.boolean().default(false),
+  recurrence: z.string().optional().nullable(),
+  progress: z.number().min(0).max(100).default(0),
+})
+
+export const passwordChangeSchema = z.object({
+  currentPassword: z.string().min(6, 'Current password is required'),
+  newPassword: z.string().min(6, 'New password must be at least 6 characters'),
+  confirmPassword: z.string().min(6, 'Please confirm your new password'),
+}).refine((data) => data.newPassword === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ['confirmPassword'],
+})
+
 export type LoginInput = z.infer<typeof loginSchema>
 export type RegisterInput = z.infer<typeof registerSchema>
 export type PostInput = z.infer<typeof postSchema>
@@ -84,3 +106,5 @@ export type TagInput = z.infer<typeof tagSchema>
 export type CommentInput = z.infer<typeof commentSchema>
 export type SettingsInput = z.infer<typeof settingsSchema>
 export type UserUpdateInput = z.infer<typeof userUpdateSchema>
+export type TaskInput = z.infer<typeof taskSchema>
+export type PasswordChangeInput = z.infer<typeof passwordChangeSchema>

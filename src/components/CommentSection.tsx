@@ -14,6 +14,7 @@ interface Comment {
   content: string
   createdAt: Date
   approved: boolean
+  anonymousName?: string | null
   author: {
     id: string
     name: string | null
@@ -53,11 +54,15 @@ export default function CommentSection({ postId, initialComments }: CommentSecti
     }
     setIsSubmitting(true)
     try {
-      const payload = {
+      const payload: {
+        content: string;
+        postId: string;
+        name?: string;
+      } = {
         content: newComment,
         postId,
       };
-      if (asAnonymous) payload['name'] = anonymousName.trim();
+      if (asAnonymous) payload.name = anonymousName.trim();
       const { data } = await axios.post('/api/comments', payload)
       toast.success('Comment submitted! It will appear after approval.')
       setNewComment('')

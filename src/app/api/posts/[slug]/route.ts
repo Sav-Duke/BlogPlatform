@@ -10,6 +10,11 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   try {
+    // Validate slug format
+    if (!params.slug || params.slug.length > 200) {
+      return NextResponse.json({ error: 'Invalid slug' }, { status: 400 })
+    }
+
     const post = await prisma.post.findUnique({
       where: { slug: params.slug },
       include: {
