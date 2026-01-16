@@ -3,7 +3,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { postSchema } from '@/lib/validations'
-import { calculateReadTime } from '@/lib/utils'
+import { calculateReadTime, slugify } from '@/lib/utils'
+import { generateUniqueSlug } from '@/lib/db-helpers'
 
 export async function GET(req: NextRequest) {
   try {
@@ -138,10 +139,14 @@ export async function POST(req: NextRequest) {
       ? body.seoKeywords.join(', ') 
       : (body.seoKeywords || '')
 
+    // Generate unique slug (fallback to title when slug not provided)
+    const baseSlug = slugify(body.slug || body.title)
+    const uniqueSlug = await generateUniqueSlug(prisma.post, baseSlug)
+
     const post = await prisma.post.create({
       data: {
         title: body.title,
-        slug: body.slug,
+        slug: uniqueSlug,
         excerpt: body.excerpt,
         content: body.content,
         coverImage: body.coverImage,
