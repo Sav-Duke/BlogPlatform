@@ -188,9 +188,9 @@ function UltimateRichTextEditorInner({
   };
 
   return (
-    <div style={{ background: '#fff', borderRadius: 8, border: '1.5px solid #d1d5db', boxShadow: '0 2px 8px #0001', padding: 0 }}>
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-600 shadow-sm">
       {/* Toolbar */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, borderBottom: '1px solid #e5e7eb', padding: 8, background: '#f9fafb', borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
+      <div className="flex flex-wrap gap-1 border-b border-gray-200 dark:border-gray-700 p-2 bg-gray-50 dark:bg-gray-900 rounded-t-lg">
         <MenuButton onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive('bold')} title="Bold"><Bold size={18} /></MenuButton>
         <MenuButton onClick={() => editor.chain().focus().toggleItalic().run()} active={editor.isActive('italic')} title="Italic"><Italic size={18} /></MenuButton>
         <MenuButton onClick={() => editor.chain().focus().toggleUnderline().run()} active={editor.isActive('underline')} title="Underline"><UnderlineIcon size={18} /></MenuButton>
@@ -227,7 +227,7 @@ function UltimateRichTextEditorInner({
       {/* Editor Content */}
       <EditorContent 
         editor={editor} 
-        className="min-h-[300px] rounded-lg p-4 bg-white dark:bg-gray-800 prose dark:prose-invert max-w-none"
+        className="min-h-[300px] rounded-lg p-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 prose dark:prose-invert max-w-none [&_.ProseMirror]:text-gray-900 [&_.ProseMirror]:dark:text-gray-100"
       />
       <input
         type="file"
