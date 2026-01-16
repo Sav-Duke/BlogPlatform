@@ -1,0 +1,13 @@
+.env.local
+.env.*.local
+node_modules
+.git
+.gitignore
+.next
+.vercel
+*.md
+!DEPLOYMENT.md
+!README.md
+prisma/dev.db
+dev.db
+public/uploads
