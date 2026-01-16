@@ -93,7 +93,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }))
 
-    return [...staticPages, ...postPages, ...categoryPages]
+    // Tag pages
+    const tagPages: MetadataRoute.Sitemap = tags.map((tag) => ({
+      url: `${baseUrl}/tag/${tag.slug}`,
+      lastModified: tag.createdAt,
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    }))
+
+    return [...staticPages, ...postPages, ...categoryPages, ...tagPages]
   } catch (error) {
     console.error('Sitemap generation error:', error)
     // Return at least the static pages

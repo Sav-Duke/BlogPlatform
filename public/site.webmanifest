@@ -1,0 +1,16 @@
+{
+  "name": "AnimalHub Blog",
+  "short_name": "AnimalHub",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "description": "AnimalHub blog platform for animal care, farming, and wellness.",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 24x24 32x32 48x48 64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}
