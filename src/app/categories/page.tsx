@@ -5,6 +5,8 @@ import ScrollToTop from '@/components/ScrollToTop'
 import Link from 'next/link'
 import { FolderOpen } from 'lucide-react'
 
+export const dynamic = 'force-dynamic' // Don't pre-render at build time
+
 export const metadata = {
   title: 'Categories | Superior Blog',
   description: 'Browse all blog categories',

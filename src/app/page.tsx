@@ -7,6 +7,7 @@ import Newsletter from '@/components/Newsletter'
 import ScrollToTop from '@/components/ScrollToTop'
 import { ArrowRight, TrendingUp, Sparkles } from 'lucide-react'
 
+export const dynamic = 'force-dynamic' // Don't pre-render at build time
 export const revalidate = 60 // Revalidate every 60 seconds
 
 async function getFeaturedPosts() {

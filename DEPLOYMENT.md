@@ -26,16 +26,45 @@ NOTIFY_EMAIL="your-email@gmail.com"
 NOTIFY_EMAIL_PASS="your-app-password"
 ```
 
-### 2. Generate Secure Secrets
+### 2. Vercel Deployment
+
+> ⚠️ **Important**: This application requires a database connection. SQLite won't work on Vercel (serverless environment). Use PostgreSQL or similar.
+
+#### Setup Steps:
+
+1. **Create a PostgreSQL database** on Railway, Supabase, or similar
+2. **Add Environment Variables to Vercel**:
+   - Go to Project Settings → Environment Variables
+   - Add all required variables (see `.env.example`)
+   - For production: Use PostgreSQL DATABASE_URL, not SQLite
+
+3. **Example Vercel Environment Variables**:
+```
+DATABASE_URL=postgresql://user:password@host:5432/blogdb
+NEXTAUTH_URL=https://yourdomain.vercel.app
+NEXTAUTH_SECRET=<generate-with: openssl rand -base64 32>
+```
+
+4. **Deploy**:
+```bash
+vercel deploy
+```
+
+The build will now work because:
+- Database is available during build
+- Pages with `export const dynamic = 'force-dynamic'` skip pre-rendering
+- API routes work on demand with database access
+
+### 3. Generate Secure Secrets
 
 ```bash
 # Generate NEXTAUTH_SECRET
 openssl rand -base64 32
 ```
 
-### 3. Database Setup
+### 4. Database Setup
 
-#### For SQLite (Development)
+#### For SQLite (Development Only)
 ```bash
 npm run db:push
 npm run db:seed
@@ -43,7 +72,7 @@ npm run db:seed
 
 #### For PostgreSQL (Production)
 ```bash
-# Update DATABASE_URL in .env
+# Update DATABASE_URL in .env with PostgreSQL connection string
 npm run db:push
 npm run db:seed
 ```
