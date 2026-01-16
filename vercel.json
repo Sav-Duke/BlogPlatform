@@ -1,7 +1,6 @@
 {
   "buildCommand": "next build",
   "framework": "nextjs",
-  "nodeVersion": "18.x",
   "functions": {
     "src/app/api/**": {
       "maxDuration": 30
