@@ -1,0 +1,23 @@
+{
+  "buildCommand": "next build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "nodeVersion": "18.x",
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "NEXTAUTH_URL": "@nextauth_url",
+    "NEXTAUTH_SECRET": "@nextauth_secret"
+  },
+  "functions": {
+    "src/app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "redirects": [
+    {
+      "source": "/blog/:slug/",
+      "destination": "/blog/:slug",
+      "permanent": false
+    }
+  ]
+}
